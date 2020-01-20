@@ -9,14 +9,25 @@ const questionSchema = new Schema({
     type: String,
     default: ''
   },
-  options: {
-    type: Object,
-    required: [true, 'Email address should be unique'],
-    unique: [true, 'Email address should be unique']
+  option1: {
+    type: String,
+    required: true,
   },
-  isCorrect: {
-    type: Boolean,
-    default: false
+  option2: {
+    type: String,
+    required: true,
+  },
+  option3: {
+    type: String,
+    required: true,
+  },
+  option4: {
+    type: String,
+    required: true,
+  },
+  answer: {
+    type: String,
+    required: true,
   }
 }, {
   timestamps: true

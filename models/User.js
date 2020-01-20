@@ -5,11 +5,10 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const userSchema = new Schema({
-  userName: {
+  name: {
     type: String,
     max: 20,
     required: [true, "Username can't be blank"],
-    unique: [true, 'Username should be an unique field']
   },
   email: {
     type: String,
@@ -19,12 +18,16 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, "Password can't be blank"],
-    min: [8, "Can't be less than 8 chrecters"],
-    max: [20, "Can't be more than 20 chrecters"]
+    min: [8, "Password can't be less than 8 chrecters"],
+    max: [20, "Password can't be more than 20 chrecters"]
   },
   isAdmin: {
     type: Boolean,
     default: false
+  },
+  score: {
+    type: Number,
+    default: 0
   }
 }, {
   timestamps: true
