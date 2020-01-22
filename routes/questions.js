@@ -8,6 +8,8 @@ router.get('/', jwtAuth.verifyToken, jwtAuth.isAdmin, questionController.getAllQ
 
 router.post('/', jwtAuth.verifyToken, jwtAuth.isAdmin, questionController.createQuestion);
 
+router.post('/create-many', jwtAuth.verifyToken, jwtAuth.isAdmin, questionController.createQusetions);
+
 router.get('/:id', jwtAuth.verifyToken, questionController.getQuestion);
 
 router.put('/:id/update', jwtAuth.verifyToken, jwtAuth.isAdmin, questionController.updateQuestion);

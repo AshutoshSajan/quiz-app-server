@@ -34,6 +34,8 @@ module.exports = {
             error: err
           });
         } else if (decoded) {
+          console.log(decoded, 'decoded jwt data...');
+
           req.user = decoded;
           next();
         }
@@ -43,31 +45,39 @@ module.exports = {
 
   // check for admin user
   isAdmin: (req, res, next) => {
-    console.log(req.user, "inside is admin");
+    console.log(req.user, "inside is admin 1...");
     const id = req.user.userId;
-    User.findById(id)
-      .select("isAdmin")
-      .exec((err, user) => {
-        console.log(user, "inside is admin...");
-        if (err) {
-          console.log(err);
-          res.status(500).json({
-            success: false,
-            message: "server error",
-            error: err
-          });
-        } else if (!user.isAdmin) {
-          console.log(user);
-          res.status(403).json({
-            success: false,
-            message: "unauthorized",
-            error: err
-          });
-        } else if (user.isAdmin) {
-          console.log(user, "isadmin true...");
-          req.user.isAdmin = user.isAdmin;
-          next();
-        }
-      });
+
+    User.findOne({
+      _id: id
+    }, (err, user) => {
+      console.log(user, "inside is admin...2");
+      if (err) {
+        console.log(err);
+        res.status(500).json({
+          success: false,
+          message: "server error",
+          error: err
+        });
+      } else if (!user) {
+        console.log(user);
+        res.status(400).json({
+          success: false,
+          message: "user not found",
+          error: err
+        });
+      } else if (!user.isAdmin) {
+        console.log(user);
+        res.status(403).json({
+          success: false,
+          message: "unauthorized",
+          error: err
+        });
+      } else if (user && user.isAdmin) {
+        console.log(user, "isadmin true...");
+        req.user.isAdmin = user.isAdmin;
+        next();
+      }
+    });
   }
 };

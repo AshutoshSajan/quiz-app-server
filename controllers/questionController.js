@@ -103,6 +103,31 @@ module.exports = {
     })
   },
 
+  createQusetions: (req, res) => {
+    console.log(req.body, "createQusetions insertMany...");
+
+    Question.insertMany(req.body, (err, questions) => {
+      if (err) {
+        res.status(500).json({
+          success: false,
+          error: err,
+          message: "server error"
+        });
+      } else if (questions) {
+        res.status(200).json({
+          success: true,
+          questions,
+          message: 'multiple questions created...'
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: 'page not found'
+        })
+      }
+    })
+  },
+
   deleteQuestion: (req, res) => {
     const id = req.params.id;
     console.log(id, 'id......');
