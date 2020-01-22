@@ -4,7 +4,7 @@ const router = express.Router();
 const questionController = require('../controllers/questionController');
 const jwtAuth = require('../utils/jwtAuth');
 
-router.get('/', jwtAuth.verifyToken, jwtAuth.isAdmin, questionController.getAllQuestions);
+router.get('/', jwtAuth.verifyToken, questionController.getAllQuestions);
 
 router.post('/', jwtAuth.verifyToken, jwtAuth.isAdmin, questionController.createQuestion);
 

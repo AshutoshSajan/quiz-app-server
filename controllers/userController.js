@@ -160,11 +160,14 @@ module.exports = {
   // update user
   updateUser: (req, res) => {
     const id = req.user.userId;
-    console.log(id, "inside update user...");
+    console.log(id, req.body, "inside update user...");
 
     User.findOneAndUpdate({
       _id: id
-    }, req.body, (err, user) => {
+    }, req.body, {
+      upsert: true,
+      new: true
+    }, (err, user) => {
       if (err) {
         console.log(err);
         res.status(500).json({
@@ -174,8 +177,45 @@ module.exports = {
         });
       } else if (user) {
         user.password = undefined;
-
         console.log(user, "updated user...");
+
+        res.status(200).json({
+          success: true,
+          message: "user updated...",
+          user
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "page not found",
+        });
+      }
+    })
+  },
+
+  incrementTotalScore: (req, res) => {
+    const id = req.user.userId;
+    console.log(id, "inside update user...");
+
+    User.findByIdAndUpdate(id, {
+      $inc: {
+        totalScore: 1
+      }
+    }, {
+      upsert: true,
+      new: true
+    }, (err, user) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({
+          success: false,
+          message: "server error",
+          error: err
+        });
+      } else if (user) {
+        user.password = undefined;
+        console.log(user, "updated user...");
+
         res.status(200).json({
           success: true,
           message: "user updated...",

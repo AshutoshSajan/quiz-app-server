@@ -30,7 +30,10 @@ router.post('/login', userController.loginUser);
 router.post('/register', userController.registerUser);
 
 // update user
-router.patch('/update', jwtAuth.verifyToken, userController.updateUser);
+router.put('/update', jwtAuth.verifyToken, userController.updateUser);
+
+// update total score
+router.get('/update/total-score', jwtAuth.verifyToken, userController.incrementTotalScore);
 
 // delete user
 router.delete('/delete', jwtAuth.verifyToken, userController.deleteUser);

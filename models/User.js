@@ -7,7 +7,8 @@ const saltRounds = 10;
 const userSchema = new Schema({
   name: {
     type: String,
-    max: 20,
+    min: [3, "Username can't less than 3 characters"],
+    max: [20, "Username can't be more than 20 characters"],
     required: [true, "Username can't be blank"],
   },
   email: {
@@ -18,14 +19,18 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, "Password can't be blank"],
-    min: [8, "Password can't be less than 8 chrecters"],
-    max: [20, "Password can't be more than 20 chrecters"]
+    min: [8, "Password can't be less than 8 characters"],
+    max: [20, "Password can't be more than 20 characters"]
   },
   isAdmin: {
     type: Boolean,
     default: false
   },
   score: {
+    type: Number,
+    default: 0
+  },
+  totalScore: {
     type: Number,
     default: 0
   }
