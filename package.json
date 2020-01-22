@@ -16,6 +16,7 @@
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.9",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "react-icons": "^3.8.0"
   }
 }
