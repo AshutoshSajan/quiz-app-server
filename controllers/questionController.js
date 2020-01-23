@@ -74,7 +74,7 @@ module.exports = {
 
   updateQuestion: (req, res) => {
     const id = req.params.id;
-    console.log(req.body, id, 'id......');
+    console.log(req.body, id, 'id...... inside upadte question');
 
     Question.findOneAndUpdate({
       _id: id
@@ -129,8 +129,10 @@ module.exports = {
   },
 
   deleteQuestion: (req, res) => {
+    console.log(req.params.id, 'deleteQuestion params id....');
+
     const id = req.params.id;
-    console.log(id, 'id......');
+    console.log(id, 'id......inside deleteQuestion....');
 
     Question.findOneAndDelete({
       _id: id
