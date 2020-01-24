@@ -9,6 +9,10 @@ const questionSchema = new Schema({
     type: String,
     default: ''
   },
+  category: {
+    type: String,
+    default: ''
+  },
   option1: {
     type: String,
     required: true,

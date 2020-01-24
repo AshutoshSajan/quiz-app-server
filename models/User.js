@@ -59,7 +59,6 @@ userSchema.pre('save', function (next) {
 
           // creating admin user
           if (this.email === process.env.EMAIL) {
-            console.log("inside mail check pre-save hook...");
             this.isAdmin = true;
             this.isVerified = true;
             next();

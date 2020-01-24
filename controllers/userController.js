@@ -6,7 +6,6 @@ const jwtAuth = require('../utils/jwtAuth');
 module.exports = {
   // create/register user
   registerUser: (req, res) => {
-    console.log("inside register user");
     User.findOne({
       email: req.body.email
     }, (err, user) => {
@@ -19,7 +18,6 @@ module.exports = {
       } else if (!user) {
         User.create(req.body, (err, user) => {
           if (err) {
-            console.log(err);
             res.status(500).json({
               success: false,
               message: "server error",
@@ -58,7 +56,6 @@ module.exports = {
       })
       .exec((err, user) => {
         if (err) {
-          console.log(err);
           res.status(500).json({
             success: false,
             message: "server error",
@@ -71,12 +68,9 @@ module.exports = {
           });
         } else if (user) {
           const plainPassword = req.body.password;
-          console.log(user, req.body, plainPassword, "inside login user before password compare...");
 
           bcrypt.compare(plainPassword, user.password, (err, match) => {
-            console.log(match, 'match...');
             if (err) {
-              console.log(err, "bcrypt password compare err...");
               res.status(400).json({
                 success: false,
                 message: "bcrypt password compare error",
@@ -105,14 +99,12 @@ module.exports = {
 
   // get single user
   getUser: (req, res) => {
-    console.log(req.user.userId, "req.user.userId");
     const id = req.user.userId;
 
     User.findById(id)
       .select('-password -__v -createdAt -updatedAt')
       .exec((err, user) => {
         if (err) {
-          console.log(err);
           res.status(500).json({
             success: false,
             message: "server error",
@@ -129,13 +121,11 @@ module.exports = {
 
   // get all users
   getAllUsers: (req, res) => {
-    console.log(req.user, "inside get all users...");
     if (req.user.isAdmin) {
       User.find({})
         .select('-password -__v -createdAt -updatedAt')
         .exec((err, users) => {
           if (err) {
-            console.log(err);
             res.status(500).json({
               success: false,
               message: "server error",
@@ -160,7 +150,6 @@ module.exports = {
   // update user
   updateUser: (req, res) => {
     const id = req.user.userId;
-    console.log(id, req.body, "inside update user...");
 
     User.findOneAndUpdate({
       _id: id
@@ -169,7 +158,6 @@ module.exports = {
       new: true
     }, (err, user) => {
       if (err) {
-        console.log(err);
         res.status(500).json({
           success: false,
           message: "server error",
@@ -177,7 +165,6 @@ module.exports = {
         });
       } else if (user) {
         user.password = undefined;
-        console.log(user, "updated user...");
 
         res.status(200).json({
           success: true,
@@ -195,7 +182,6 @@ module.exports = {
 
   incrementTotalScore: (req, res) => {
     const id = req.user.userId;
-    console.log(id, "inside update user...");
 
     User.findByIdAndUpdate(id, {
       $inc: {
@@ -206,7 +192,6 @@ module.exports = {
       new: true
     }, (err, user) => {
       if (err) {
-        console.log(err);
         res.status(500).json({
           success: false,
           message: "server error",
@@ -214,7 +199,6 @@ module.exports = {
         });
       } else if (user) {
         user.password = undefined;
-        console.log(user, "updated user...");
 
         res.status(200).json({
           success: true,
@@ -232,27 +216,23 @@ module.exports = {
 
   // delete user
   deleteUser: (req, res) => {
-    console.log(req.user, "deleteUser");
     const id = req.user.userId;
 
     User.findOneAndDelete({
       _id: id
     }).select('userName email').exec((err, user) => {
       if (err) {
-        console.log(err);
         res.status(500).json({
           success: false,
           message: "server error",
           error: err
         });
       } else if (user) {
-        console.log(user, 'deleted user...');
         res.status(200).json({
           success: true,
           message: "user deleted",
         });
       } else {
-        console.log(user, 'deleted user...');
         res.status(404).json({
           success: false,
           message: "page not found",

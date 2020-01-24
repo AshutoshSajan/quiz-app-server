@@ -8,5 +8,4 @@ const questionsRouter = require('./questions');
 router.use('/users', usersRouter);
 router.use('/questions', questionsRouter);
 
-
 module.exports = router;

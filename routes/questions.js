@@ -14,6 +14,6 @@ router.get('/:id', jwtAuth.verifyToken, questionController.getQuestion);
 
 router.put('/:id/update', jwtAuth.verifyToken, jwtAuth.isAdmin, questionController.updateQuestion);
 
-router.delete('/:id/delete', jwtAuth.verifyToken, questionController.deleteQuestion);
+router.delete('/:id/delete', jwtAuth.verifyToken, jwtAuth.isAdmin, questionController.deleteQuestion);
 
 module.exports = router;
