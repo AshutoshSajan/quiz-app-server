@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const usersRouter = require('./users');
-const questionsRouter = require('./questions');
+const quizRouter = require('./quizzes');
 
 
 router.use('/users', usersRouter);
-router.use('/questions', questionsRouter);
+router.use('/quizzes', quizRouter);
 
 module.exports = router;

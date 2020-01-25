@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-const questionSchema = new Schema({
+const quizSchema = new Schema({
   question: {
     type: String,
     default: ''
@@ -38,5 +38,5 @@ const questionSchema = new Schema({
 });
 
 
-const Question = mongoose.model('Question', questionSchema);
-module.exports = Question;
+const Quiz = mongoose.model('Quiz', quizSchema);
+module.exports = Quiz;

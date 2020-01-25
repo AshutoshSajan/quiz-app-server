@@ -180,6 +180,43 @@ module.exports = {
     })
   },
 
+  updateUserScore: (req, res) => {
+    const id = req.user.userId;
+    let scores = req.body.scores;
+
+    User.findByIdAndUpdate(id, {
+      $push: {
+        scores
+      }
+    }, {
+      upsert: true,
+      new: true
+    }, (err, user) => {
+      // console.log(err, user, '....');
+
+      if (err) {
+        res.status(500).json({
+          success: false,
+          message: "server error",
+          error: err
+        });
+      } else if (user) {
+        user.password = undefined;
+
+        res.status(200).json({
+          success: true,
+          message: "user updated...",
+          user
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "page not found",
+        });
+      }
+    })
+  },
+
   incrementTotalScore: (req, res) => {
     const id = req.user.userId;
 

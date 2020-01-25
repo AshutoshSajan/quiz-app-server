@@ -30,6 +30,10 @@ const userSchema = new Schema({
     type: Number,
     default: 0
   },
+  scores: [{
+    type: Number,
+    default: 0
+  }],
   totalScore: {
     type: Number,
     default: 0

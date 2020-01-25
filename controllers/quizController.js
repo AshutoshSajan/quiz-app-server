@@ -1,18 +1,18 @@
-const Question = require('../models/Question');
+const Quiz = require('../models/Quiz');
 
 module.exports = {
-  createQuestion: (req, res) => {
-    Question.create(req.body, (err, question) => {
+  createQuiz: (req, res) => {
+    Quiz.create(req.body, (err, quiz) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (question) {
+      } else if (quiz) {
         res.status(200).json({
           success: true,
-          question
+          quiz
         });
       } else {
         res.status(404).json({
@@ -23,22 +23,22 @@ module.exports = {
     })
   },
 
-  getQuestion: (req, res) => {
+  getQuiz: (req, res) => {
     const id = req.params.id;
 
-    Question.findOne({
+    Quiz.findOne({
       _id: id
-    }, (err, question) => {
+    }, (err, quiz) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (question) {
+      } else if (quiz) {
         res.status(200).json({
           success: true,
-          question
+          quiz
         });
       } else {
         res.status(404).json({
@@ -49,18 +49,18 @@ module.exports = {
     })
   },
 
-  getAllQuestions: (req, res) => {
-    Question.find({}, (err, questions) => {
+  getAllQuizzes: (req, res) => {
+    Quiz.find({}, (err, quizzes) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (questions) {
+      } else if (quizzes) {
         res.status(200).json({
           success: true,
-          questions
+          quizzes
         });
       } else {
         res.status(404).json({
@@ -71,25 +71,25 @@ module.exports = {
     })
   },
 
-  updateQuestion: (req, res) => {
+  updateQuiz: (req, res) => {
     const id = req.params.id;
 
-    Question.findOneAndUpdate({
+    Quiz.findOneAndUpdate({
       _id: id
     }, req.body, {
       upsert: true,
       new: true
-    }, (err, question) => {
+    }, (err, quiz) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (question) {
+      } else if (quiz) {
         res.status(200).json({
           success: true,
-          question,
+          quiz,
           message: 'update successful'
         });
       } else {
@@ -101,19 +101,19 @@ module.exports = {
     })
   },
 
-  createQusetions: (req, res) => {
-    Question.insertMany(req.body, (err, questions) => {
+  createQuizzes: (req, res) => {
+    Quiz.insertMany(req.body, (err, quizzes) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (questions) {
+      } else if (quizzes) {
         res.status(200).json({
           success: true,
-          questions,
-          message: 'multiple questions created...'
+          quizzes,
+          message: 'multiple quiz created...'
         });
       } else {
         res.status(404).json({
@@ -124,22 +124,22 @@ module.exports = {
     })
   },
 
-  deleteQuestion: (req, res) => {
+  deleteQuiz: (req, res) => {
     const id = req.params.id;
 
-    Question.findOneAndDelete({
+    Quiz.findOneAndDelete({
       _id: id
-    }, (err, question) => {
+    }, (err, quiz) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (question) {
+      } else if (quiz) {
         res.status(200).json({
           success: true,
-          message: 'question deleted'
+          message: 'quiz deleted'
         });
       } else {
         res.status(404).json({
