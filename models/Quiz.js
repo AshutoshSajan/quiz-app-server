@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-
 const quizSchema = new Schema({
   question: {
     type: String,

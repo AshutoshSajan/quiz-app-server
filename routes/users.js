@@ -32,7 +32,7 @@ router.post('/register', userController.registerUser);
 // update user
 router.put('/update', jwtAuth.verifyToken, userController.updateUser);
 
-//new route
+// new route
 router.put('/update/score', jwtAuth.verifyToken, userController.updateUserScore);
 
 // update total score
