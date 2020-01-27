@@ -1,3 +1,4 @@
+const cool = require('cool-ascii-faces')
 require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
