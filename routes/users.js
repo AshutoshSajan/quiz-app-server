@@ -38,6 +38,9 @@ router.put('/update/score', jwtAuth.verifyToken, userController.updateUserScore)
 // update total score
 router.get('/update/total-score', jwtAuth.verifyToken, userController.incrementTotalScore);
 
+// delete score
+router.patch('/update/score/:id/delete', jwtAuth.verifyToken, userController.deleteScore);
+
 // delete user
 router.delete('/delete', jwtAuth.verifyToken, userController.deleteUser);
 

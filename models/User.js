@@ -31,8 +31,18 @@ const userSchema = new Schema({
     default: 0
   },
   scores: [{
-    type: Number,
-    default: 0
+    score: {
+      type: Number,
+      default: 0
+    },
+    date: {
+      type: Date,
+      default: new Date()
+    },
+    category: {
+      type: String,
+      default: "all"
+    }
   }],
   totalScore: {
     type: Number,
