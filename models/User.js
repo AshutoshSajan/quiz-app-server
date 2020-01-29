@@ -35,13 +35,13 @@ const userSchema = new Schema({
       type: Number,
       default: 0
     },
-    date: {
-      type: Date,
-      default: new Date()
-    },
     category: {
       type: String,
       default: "all"
+    },
+    date: {
+      type: Date,
+      default: new Date()
     }
   }],
   totalScore: {
