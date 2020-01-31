@@ -16,7 +16,6 @@ module.exports = {
 
   // jwt token verification
   verifyToken: (req, res, next) => {
-    console.log(req.params.id, 'params id inside verify token...')
     var token = req.headers.Authorization || req.headers.authorization || "";
 
     if (!token) {

@@ -1,4 +1,3 @@
-const cool = require('cool-ascii-faces')
 require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
@@ -11,17 +10,16 @@ const indexRouter = require('./routes/index');
 
 const app = express();
 
-mongoose.connect("mongodb://localhost/quiz-app", {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-  },
-  function (err, connection) {
-    if (err) throw err;
-    else if (connection) console.log("connected to mongodb...");
-  }
-)
+mongoose.connect(process.env.LOCAL_MONGO_URI, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+}, (err, connection) => {
+  if (err) throw err;
+  else if (connection) console.log("connected to mongodb...");
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

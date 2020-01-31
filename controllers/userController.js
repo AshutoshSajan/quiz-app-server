@@ -185,49 +185,11 @@ module.exports = {
     let scores = req.body;
     console.log(scores, 'update user score....');
 
-
     User.findByIdAndUpdate(id, {
       $push: {
         scores
       }
     }, {
-      new: true
-    }, (err, user) => {
-      // console.log(err, user, '....');
-
-      if (err) {
-        res.status(500).json({
-          success: false,
-          message: "server error",
-          error: err
-        });
-      } else if (user) {
-        user.password = undefined;
-
-        res.status(200).json({
-          success: true,
-          message: "user updated...",
-          user
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: "page not found",
-        });
-      }
-    })
-  },
-
-  incrementTotalScore: (req, res) => {
-    const id = req.user.userId;
-    console.log('insde inctoal score...');
-
-    User.findByIdAndUpdate(id, {
-      $inc: {
-        totalScore: 1
-      }
-    }, {
-      upsert: true,
       new: true
     }, (err, user) => {
       if (err) {
@@ -256,7 +218,6 @@ module.exports = {
   deleteScore: (req, res) => {
     const userId = req.user.userId;
     const scoreId = req.params.id;
-    console.log(userId, scoreId, 'delete score params id....');
 
     User.findByIdAndUpdate(userId, {
       $pull: {
