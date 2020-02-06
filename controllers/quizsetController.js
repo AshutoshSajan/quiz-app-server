@@ -1,18 +1,18 @@
-const QuizSet = require('../models/QuizSet');
+const Quizset = require('../models/Quizset');
 
 module.exports = {
-  createQuizSet: (req, res) => {
-    QuizSet.create(req.body, (err, quizSet) => {
+  createQuizset: (req, res) => {
+    Quizset.create(req.body, (err, quizset) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (quizSet) {
+      } else if (quizset) {
         res.status(200).json({
           success: true,
-          quizSet
+          quizset
         });
       } else {
         res.status(404).json({
@@ -23,22 +23,22 @@ module.exports = {
     })
   },
 
-  getQuizSet: (req, res) => {
+  getQuizset: (req, res) => {
     const id = req.params.id;
 
-    QuizSet.findOne({
+    Quizset.findOne({
       _id: id
-    }, (err, quizSet) => {
+    }, (err, quizset) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (quizSet) {
+      } else if (quizset) {
         res.status(200).json({
           success: true,
-          quizSet
+          quizset
         });
       } else {
         res.status(404).json({
@@ -49,18 +49,18 @@ module.exports = {
     })
   },
 
-  getQuizSets: (req, res) => {
-    QuizSet.find({}, (err, quizSets) => {
+  getQuizsets: (req, res) => {
+    Quizset.find({}, (err, quizsets) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (quizSets) {
+      } else if (quizsets) {
         res.status(200).json({
           success: true,
-          quizSets
+          quizsets
         });
       } else {
         res.status(404).json({
@@ -71,26 +71,27 @@ module.exports = {
     })
   },
 
-  updateQuizSet: (req, res) => {
+  updateQuizset: (req, res) => {
     const id = req.params.id;
+    console.log('inside quizset update...');
 
-    QuizSet.findOneAndUpdate({
+    Quizset.findOneAndUpdate({
       _id: id
     }, req.body, {
       upsert: true,
       new: true
-    }, (err, quizSet) => {
+    }, (err, quizset) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (quizSet) {
+      } else if (quizset) {
         res.status(200).json({
           success: true,
-          quizSet,
-          message: 'quizSet update successful'
+          quizset,
+          message: 'quizset update successful'
         });
       } else {
         res.status(404).json({
@@ -101,18 +102,18 @@ module.exports = {
     })
   },
 
-  createQuizSets: (req, res) => {
-    QuizSet.insertMany(req.body, (err, quizSet) => {
+  createQuizsets: (req, res) => {
+    Quizset.insertMany(req.body, (err, quizsets) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (quizSet) {
+      } else if (quizsets) {
         res.status(200).json({
           success: true,
-          quizSet,
+          quizsets,
           message: 'multiple quizsets created...'
         });
       } else {
@@ -124,22 +125,22 @@ module.exports = {
     })
   },
 
-  deleteQuizSet: (req, res) => {
+  deleteQuizset: (req, res) => {
     const id = req.params.id;
 
-    QuizSet.findOneAndDelete({
+    Quizset.findOneAndDelete({
       _id: id
-    }, (err, quizSet) => {
+    }, (err, quizset) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
           message: "server error"
         });
-      } else if (quizSet) {
+      } else if (quizset) {
         res.status(200).json({
           success: true,
-          message: 'quizSet deleted'
+          message: 'quizset deleted'
         });
       } else {
         res.status(404).json({

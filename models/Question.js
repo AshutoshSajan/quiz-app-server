@@ -6,9 +6,9 @@ const questionSchema = new Schema({
     type: String,
     default: ''
   },
-  category: {
-    type: String,
-    default: ''
+  quizsetId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Quizset'
   },
   option1: {
     type: String,

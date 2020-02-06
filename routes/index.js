@@ -3,11 +3,11 @@ const router = express.Router();
 
 const usersRouter = require('./users');
 const questionRouter = require('./questions');
-const quizSetRouter = require('./quizSet');
+const quizSetRouter = require('./quizset');
 
 router.use('/users', usersRouter);
 router.use('/questions', questionRouter);
-router.use('/quiz-sets', quizSetRouter);
+router.use('/quizsets', quizSetRouter);
 
 
 module.exports = router;

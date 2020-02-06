@@ -1,5 +1,5 @@
 const Question = require('../models/Question');
-const QuizSet = require('../models/QuizSet');
+const Quizset = require('../models/Quizset');
 
 module.exports = {
   createQuestion: (req, res) => {
@@ -13,7 +13,7 @@ module.exports = {
           message: "server error"
         });
       } else if (question) {
-        QuizSet.findByIdAndUpdate(req.body.quizSetId, {
+        Quizset.findByIdAndUpdate(req.body.QuizsetId, {
             $push: {
               questions: question._id
             }
@@ -21,15 +21,15 @@ module.exports = {
             new: true,
             upsert: true
           },
-          (err, quizSet) => {
+          (err, quizset) => {
             if (err) {
               res.status(500).json({
                 success: false,
                 error: err,
                 message: "server error"
               });
-            } else if (quizSet) {
-              console.log(quizSet, 'quizset updated and question created...');
+            } else if (quizset) {
+              console.log(quizset, 'Quizset updated and question created...');
 
               res.status(200).json({
                 success: true,
