@@ -9,7 +9,7 @@ const QuizsetSchema = new Schema({
   },
   questions: [{
     type: Schema.Types.ObjectId,
-    default: ""
+    ref: 'Question',
   }]
 }, {
   timestamps: true

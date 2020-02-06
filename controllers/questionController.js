@@ -3,7 +3,8 @@ const Quizset = require('../models/Quizset');
 
 module.exports = {
   createQuestion: (req, res) => {
-    console.log(req.body, "create quiz request body");
+    console.log(req.body, "create question request body");
+
 
     Question.create(req.body, (err, question) => {
       if (err) {
@@ -13,13 +14,12 @@ module.exports = {
           message: "server error"
         });
       } else if (question) {
-        Quizset.findByIdAndUpdate(req.body.QuizsetId, {
+        Quizset.findByIdAndUpdate(req.body.quizsetId, {
             $push: {
               questions: question._id
             }
           }, {
             new: true,
-            upsert: true
           },
           (err, quizset) => {
             if (err) {

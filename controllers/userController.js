@@ -190,7 +190,10 @@ module.exports = {
         scores
       }
     }, {
-      new: true
+      sort: {
+        'createdAt': -1
+      },
+      new: true,
     }, (err, user) => {
       if (err) {
         res.status(500).json({

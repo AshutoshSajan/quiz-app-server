@@ -47,26 +47,34 @@ module.exports = {
     const id = req.params.id;
 
     Quizset.findOne({
-      _id: id
-    }, (err, quizset) => {
-      if (err) {
-        res.status(500).json({
-          success: false,
-          error: err,
-          message: "server error"
-        });
-      } else if (quizset) {
-        res.status(200).json({
-          success: true,
-          quizset
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: 'page not found'
-        })
-      }
-    })
+        _id: id
+      })
+      .populate({
+        path: 'questions',
+        // for nested population
+        populate: {
+          path: 'quizsetId',
+        }
+      })
+      .exec((err, quizset) => {
+        if (err) {
+          res.status(500).json({
+            success: false,
+            error: err,
+            message: "server error"
+          });
+        } else if (quizset) {
+          res.status(200).json({
+            success: true,
+            quizset
+          });
+        } else {
+          res.status(404).json({
+            success: false,
+            message: 'page not found'
+          })
+        }
+      })
   },
 
   getQuizsets: (req, res) => {
