@@ -2,7 +2,10 @@ const Quizset = require('../models/Quizset');
 
 module.exports = {
   createQuizset: (req, res) => {
-    Quizset.create(req.body, (err, quizset) => {
+
+    Quizset.findOne({
+      name: req.body.name
+    }, (err, quizset) => {
       if (err) {
         res.status(500).json({
           success: false,
@@ -10,14 +13,31 @@ module.exports = {
           message: "server error"
         });
       } else if (quizset) {
-        res.status(200).json({
-          success: true,
-          quizset
-        });
-      } else {
-        res.status(404).json({
+        res.status(400).json({
           success: false,
-          message: 'Not found'
+          message: 'quizset already exist'
+        })
+      } else if (!quizset) {
+
+
+        Quizset.create(req.body, (err, quizset) => {
+          if (err) {
+            res.status(500).json({
+              success: false,
+              error: err,
+              message: "server error"
+            });
+          } else if (quizset) {
+            res.status(200).json({
+              success: true,
+              quizset
+            });
+          } else {
+            res.status(404).json({
+              success: false,
+              message: 'Not found'
+            })
+          }
         })
       }
     })
@@ -73,13 +93,9 @@ module.exports = {
 
   updateQuizset: (req, res) => {
     const id = req.params.id;
-    console.log('inside quizset update...');
 
-    Quizset.findOneAndUpdate({
-      _id: id
-    }, req.body, {
-      upsert: true,
-      new: true
+    Quizset.findOne({
+      name: req.body.name
     }, (err, quizset) => {
       if (err) {
         res.status(500).json({
@@ -88,15 +104,35 @@ module.exports = {
           message: "server error"
         });
       } else if (quizset) {
-        res.status(200).json({
-          success: true,
-          quizset,
-          message: 'quizset update successful'
-        });
-      } else {
-        res.status(404).json({
+        res.status(400).json({
           success: false,
-          message: 'page not found'
+          message: 'quizset already exist'
+        })
+      } else if (!quizset) {
+        Quizset.findOneAndUpdate({
+          _id: id
+        }, req.body, {
+          upsert: true,
+          new: true
+        }, (err, quizset) => {
+          if (err) {
+            res.status(500).json({
+              success: false,
+              error: err,
+              message: "server error"
+            });
+          } else if (quizset) {
+            res.status(200).json({
+              success: true,
+              quizset,
+              message: 'quizset update successful'
+            });
+          } else {
+            res.status(404).json({
+              success: false,
+              message: 'page not found'
+            })
+          }
         })
       }
     })
