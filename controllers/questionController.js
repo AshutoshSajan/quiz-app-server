@@ -159,14 +159,32 @@ module.exports = {
           message: "server error"
         });
       } else if (question) {
-        res.status(200).json({
-          success: true,
-          message: 'question deleted'
-        });
+        Quizset.findByIdAndUpdate(question.quizsetId, {
+            $pull: {
+              questions: question._id
+            }
+          }, {
+            new: true,
+          },
+          (err, quizset) => {
+            if (err) {
+              res.status(500).json({
+                success: false,
+                error: err,
+                message: "server error"
+              });
+            } else if (quizset) {
+              res.status(200).json({
+                success: true,
+                message: 'question deleted and quizset updated successfully'
+              });
+            }
+          }
+        )
       } else {
         res.status(404).json({
           success: false,
-          message: 'page not found'
+          message: 'not found'
         })
       }
     })

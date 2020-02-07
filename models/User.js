@@ -25,28 +25,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: false
   },
-  score: {
-    type: Number,
-    default: 0
-  },
   scores: [{
-    score: {
-      type: Number,
-      default: 0
-    },
-    category: {
-      type: String,
-      default: "all"
-    },
-    date: {
-      type: Date,
-      default: new Date()
-    }
-  }],
-  totalScore: {
-    type: Number,
-    default: 0
-  }
+    type: Schema.Types.ObjectId,
+    ref: 'Score',
+  }]
 }, {
   timestamps: true
 });

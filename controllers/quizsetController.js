@@ -2,7 +2,6 @@ const Quizset = require('../models/Quizset');
 
 module.exports = {
   createQuizset: (req, res) => {
-
     Quizset.findOne({
       name: req.body.name
     }, (err, quizset) => {

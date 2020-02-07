@@ -54,6 +54,11 @@ module.exports = {
     User.findOne({
         email: req.body.email
       })
+      .select('-__v -createdAt -updatedAt')
+      .populate({
+        path: 'scores',
+        select: '-__v -createdAt -updatedAt'
+      })
       .exec((err, user) => {
         if (err) {
           res.status(500).json({
@@ -102,6 +107,10 @@ module.exports = {
     const id = req.user.userId;
 
     User.findById(id)
+      .populate({
+        path: 'scores',
+        select: '-__v -createdAt -updatedAt'
+      })
       .select('-password -__v -createdAt -updatedAt')
       .exec((err, user) => {
         if (err) {
@@ -119,139 +128,143 @@ module.exports = {
       })
   },
 
+
+  // ===========================================
+  // future refrence
+  // ===========================================
   // get all users
-  getAllUsers: (req, res) => {
-    if (req.user.isAdmin) {
-      User.find({})
-        .select('-password -__v -createdAt -updatedAt')
-        .exec((err, users) => {
-          if (err) {
-            res.status(500).json({
-              success: false,
-              message: "server error",
-              error: err
-            });
-          } else {
-            res.status(200).json({
-              success: true,
-              message: "users found",
-              users
-            });
-          }
-        })
-    } else {
-      res.status(404).json({
-        success: false,
-        message: "not authorized",
-      });
-    }
-  },
+  // getAllUsers: (req, res) => {
+  //   if (req.user.isAdmin) {
+  //     User.find({})
+  //       .select('-password -__v -createdAt -updatedAt')
+  //       .exec((err, users) => {
+  //         if (err) {
+  //           res.status(500).json({
+  //             success: false,
+  //             message: "server error",
+  //             error: err
+  //           });
+  //         } else {
+  //           res.status(200).json({
+  //             success: true,
+  //             message: "users found",
+  //             users
+  //           });
+  //         }
+  //       })
+  //   } else {
+  //     res.status(404).json({
+  //       success: false,
+  //       message: "not authorized",
+  //     });
+  //   }
+  // },
 
-  // update user
-  updateUser: (req, res) => {
-    const id = req.user.userId;
+  // // update user
+  // updateUser: (req, res) => {
+  //   const id = req.user.userId;
 
-    User.findOneAndUpdate({
-      _id: id
-    }, req.body, {
-      upsert: true,
-      new: true
-    }, (err, user) => {
-      if (err) {
-        res.status(500).json({
-          success: false,
-          message: "server error",
-          error: err
-        });
-      } else if (user) {
-        user.password = undefined;
+  //   User.findOneAndUpdate({
+  //     _id: id
+  //   }, req.body, {
+  //     upsert: true,
+  //     new: true
+  //   }, (err, user) => {
+  //     if (err) {
+  //       res.status(500).json({
+  //         success: false,
+  //         message: "server error",
+  //         error: err
+  //       });
+  //     } else if (user) {
+  //       user.password = undefined;
 
-        res.status(200).json({
-          success: true,
-          message: "user updated...",
-          user
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: "page not found",
-        });
-      }
-    })
-  },
+  //       res.status(200).json({
+  //         success: true,
+  //         message: "user updated...",
+  //         user
+  //       });
+  //     } else {
+  //       res.status(404).json({
+  //         success: false,
+  //         message: "page not found",
+  //       });
+  //     }
+  //   })
+  // },
 
-  updateUserScore: (req, res) => {
-    const id = req.user.userId;
-    let scores = req.body;
+  // updateUserScore: (req, res) => {
+  //   const id = req.user.userId;
+  //   let scores = req.body;
 
-    User.findByIdAndUpdate(id, {
-      $push: {
-        scores
-      }
-    }, {
-      sort: {
-        'createdAt': -1
-      },
-      new: true,
-    }, (err, user) => {
-      if (err) {
-        res.status(500).json({
-          success: false,
-          message: "server error",
-          error: err
-        });
-      } else if (user) {
-        user.password = undefined;
+  //   User.findByIdAndUpdate(id, {
+  //     $push: {
+  //       scores
+  //     }
+  //   }, {
+  //     sort: {
+  //       'createdAt': -1
+  //     },
+  //     new: true,
+  //   }, (err, user) => {
+  //     if (err) {
+  //       res.status(500).json({
+  //         success: false,
+  //         message: "server error",
+  //         error: err
+  //       });
+  //     } else if (user) {
+  //       user.password = undefined;
 
-        res.status(200).json({
-          success: true,
-          message: "user updated...",
-          user
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: "page not found",
-        });
-      }
-    })
-  },
+  //       res.status(200).json({
+  //         success: true,
+  //         message: "user updated...",
+  //         user
+  //       });
+  //     } else {
+  //       res.status(404).json({
+  //         success: false,
+  //         message: "page not found",
+  //       });
+  //     }
+  //   })
+  // },
 
-  deleteScore: (req, res) => {
-    const userId = req.user.userId;
-    const scoreId = req.params.id;
+  // deleteScore: (req, res) => {
+  //   const userId = req.user.userId;
+  //   const scoreId = req.params.id;
 
-    User.findByIdAndUpdate(userId, {
-      $pull: {
-        scores: {
-          _id: scoreId
-        }
-      }
-    }, {
-      new: true
-    }, (err, user) => {
-      if (err) {
-        res.status(500).json({
-          success: false,
-          message: "server error",
-          error: err
-        });
-      } else if (user) {
-        user.password = undefined;
+  //   User.findByIdAndUpdate(userId, {
+  //     $pull: {
+  //       scores: {
+  //         _id: scoreId
+  //       }
+  //     }
+  //   }, {
+  //     new: true
+  //   }, (err, user) => {
+  //     if (err) {
+  //       res.status(500).json({
+  //         success: false,
+  //         message: "server error",
+  //         error: err
+  //       });
+  //     } else if (user) {
+  //       user.password = undefined;
 
-        res.status(200).json({
-          success: true,
-          message: "user updated...",
-          user
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: "page not found",
-        });
-      }
-    })
-  },
+  //       res.status(200).json({
+  //         success: true,
+  //         message: "user updated...",
+  //         user
+  //       });
+  //     } else {
+  //       res.status(404).json({
+  //         success: false,
+  //         message: "page not found",
+  //       });
+  //     }
+  //   })
+  // },
 
   // delete user
   deleteUser: (req, res) => {
