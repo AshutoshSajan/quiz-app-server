@@ -101,46 +101,29 @@ module.exports = {
 
   updateQuizset: (req, res) => {
     const id = req.params.id;
-
-    Quizset.findOne({
-      name: req.body.name
+    Quizset.findOneAndUpdate({
+      _id: id
+    }, req.body, {
+      upsert: true,
+      new: true
     }, (err, quizset) => {
       if (err) {
         res.status(500).json({
           success: false,
           error: err,
-          message: "server error"
+          message: err.codeName === 'DuplicateKey' ? 'Quizset Alredy exists' : "server error",
+
         });
       } else if (quizset) {
-        res.status(400).json({
+        res.status(200).json({
+          success: true,
+          quizset,
+          message: 'quizset update successful'
+        });
+      } else {
+        res.status(404).json({
           success: false,
-          message: 'quizset already exist'
-        })
-      } else if (!quizset) {
-        Quizset.findOneAndUpdate({
-          _id: id
-        }, req.body, {
-          upsert: true,
-          new: true
-        }, (err, quizset) => {
-          if (err) {
-            res.status(500).json({
-              success: false,
-              error: err,
-              message: "server error"
-            });
-          } else if (quizset) {
-            res.status(200).json({
-              success: true,
-              quizset,
-              message: 'quizset update successful'
-            });
-          } else {
-            res.status(404).json({
-              success: false,
-              message: 'page not found'
-            })
-          }
+          message: 'page not found'
         })
       }
     })
@@ -171,6 +154,7 @@ module.exports = {
 
   deleteQuizset: (req, res) => {
     const id = req.params.id;
+    console.log('deleteQuizsetQuestions', 'inside deleteQuizset1..');
 
     Quizset.findOneAndDelete({
       _id: id
@@ -182,6 +166,10 @@ module.exports = {
           message: "server error"
         });
       } else if (quizset) {
+        console.log(quizset, 'deleted quizset....');
+
+        deleteQuizsetQuestions(res, quizset._id, quizset.questions)
+
         res.status(200).json({
           success: true,
           message: 'quizset deleted'
@@ -193,5 +181,44 @@ module.exports = {
         })
       }
     })
-  }
+  },
+}
+
+// to delete all the quizset questions
+function deleteQuizsetQuestions(res, id, questions) {
+  console.log(id, questions, 'inside deleteQuizsetQuestions');
+
+  Quizset.deleteMany({
+    _id: id
+  }, {
+    questions: {
+      $in: questions
+    }
+  }, (err, questions) => {
+    console.log(err, questions, 'deleteQuizsetQuestions2...');
+    if (err) {
+      console.log(err, 'delete quizset questions err');
+      return false
+
+      // res.status(500).json({
+      //   success: false,
+      //   error: err,
+      //   message: "server error"
+      // });
+    } else if (questions) {
+      console.log(err, 'delete quizset questions success');
+      return true;
+      // res.status(200).json({
+      //   success: true,
+      //   message: 'questions deleted'
+      // });
+    } else {
+      console.log(err, 'delete quizset questions not founs');
+      return false;
+      // res.status(404).json({
+      //   success: false,
+      //   message: 'page not found'
+      // })
+    }
+  })
 }
