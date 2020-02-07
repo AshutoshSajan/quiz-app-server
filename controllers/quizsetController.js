@@ -154,7 +154,6 @@ module.exports = {
 
   deleteQuizset: (req, res) => {
     const id = req.params.id;
-    console.log('deleteQuizsetQuestions', 'inside deleteQuizset1..');
 
     Quizset.findOneAndDelete({
       _id: id
@@ -166,8 +165,6 @@ module.exports = {
           message: "server error"
         });
       } else if (quizset) {
-        console.log(quizset, 'deleted quizset....');
-
         deleteQuizsetQuestions(res, quizset._id, quizset.questions)
 
         res.status(200).json({
@@ -186,7 +183,6 @@ module.exports = {
 
 // to delete all the quizset questions
 function deleteQuizsetQuestions(res, id, questions) {
-  console.log(id, questions, 'inside deleteQuizsetQuestions');
 
   Quizset.deleteMany({
     _id: id
@@ -199,26 +195,12 @@ function deleteQuizsetQuestions(res, id, questions) {
     if (err) {
       console.log(err, 'delete quizset questions err');
       return false
-
-      // res.status(500).json({
-      //   success: false,
-      //   error: err,
-      //   message: "server error"
-      // });
     } else if (questions) {
       console.log(err, 'delete quizset questions success');
       return true;
-      // res.status(200).json({
-      //   success: true,
-      //   message: 'questions deleted'
-      // });
     } else {
-      console.log(err, 'delete quizset questions not founs');
+      console.log(err, 'delete quizset questions not found');
       return false;
-      // res.status(404).json({
-      //   success: false,
-      //   message: 'page not found'
-      // })
     }
   })
 }

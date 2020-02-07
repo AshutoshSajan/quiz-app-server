@@ -183,7 +183,6 @@ module.exports = {
   updateUserScore: (req, res) => {
     const id = req.user.userId;
     let scores = req.body;
-    console.log(scores, 'update user score....');
 
     User.findByIdAndUpdate(id, {
       $push: {

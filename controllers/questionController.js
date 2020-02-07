@@ -3,9 +3,6 @@ const Quizset = require('../models/Quizset');
 
 module.exports = {
   createQuestion: (req, res) => {
-    console.log(req.body, "create question request body");
-
-
     Question.create(req.body, (err, question) => {
       if (err) {
         res.status(500).json({
