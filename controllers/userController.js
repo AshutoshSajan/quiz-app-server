@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require('../models/User');
 
 const bcrypt = require('bcrypt');
 const jwtAuth = require('../utils/jwtAuth');
@@ -6,54 +6,60 @@ const jwtAuth = require('../utils/jwtAuth');
 module.exports = {
   // create/register user
   registerUser: (req, res) => {
-    User.findOne({
-      email: req.body.email
-    }, (err, user) => {
-      if (err) {
-        res.status(500).json({
-          success: false,
-          message: "server error",
-          error: err
-        });
-      } else if (!user) {
-        User.create(req.body, (err, user) => {
-          if (err) {
-            res.status(500).json({
-              success: false,
-              message: "server error",
-              error: err
-            });
-          } else if (user) {
-            user.password = undefined;
+    User.findOne(
+      {
+        email: req.body.email
+      },
+      (err, user) => {
+        if (err) {
+          res.status(500).json({
+            success: false,
+            message: 'server error',
+            error: err
+          });
+        } else if (!user) {
+          User.create(req.body, (err, user) => {
+            if (err) {
+              res.status(500).json({
+                success: false,
+                message: 'server error',
+                error: err
+              });
+            } else if (user) {
+              user.password = undefined;
 
-            const token = jwtAuth.createToken(user.id, process.env.JWT_SECRET);
-            res.status(200).json({
-              success: true,
-              message: "user created",
-              user,
-              token
-            });
-          }
-        })
-      } else if (user) {
-        res.status(400).json({
-          success: false,
-          message: "user alredy exist",
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: "page not found...",
-        });
+              const token = jwtAuth.createToken(
+                user.id,
+                process.env.JWT_SECRET
+              );
+              res.status(200).json({
+                success: true,
+                message: 'user created',
+                user,
+                token
+              });
+            }
+          });
+        } else if (user) {
+          res.status(400).json({
+            success: false,
+            message: 'user alredy exist'
+          });
+        } else {
+          res.status(404).json({
+            success: false,
+            message: 'page not found...'
+          });
+        }
       }
-    })
+    );
   },
 
   // user login
   loginUser: (req, res) => {
     User.findOne({
-        email: req.body.email
-      })
+      email: req.body.email
+    })
       .select('-__v -createdAt -updatedAt')
       .populate({
         path: 'scores',
@@ -63,13 +69,13 @@ module.exports = {
         if (err) {
           res.status(500).json({
             success: false,
-            message: "server error",
+            message: 'server error',
             error: err
           });
         } else if (!user) {
           res.status(400).json({
             success: false,
-            message: "user does not exist."
+            message: 'user does not exist.'
           });
         } else if (user) {
           const plainPassword = req.body.password;
@@ -78,28 +84,31 @@ module.exports = {
             if (err) {
               res.status(400).json({
                 success: false,
-                message: "bcrypt password compare error",
+                message: 'bcrypt password compare error',
                 error: err
               });
             } else if (match) {
-              const token = jwtAuth.createToken(user._id, process.env.JWT_SECRET);
+              const token = jwtAuth.createToken(
+                user._id,
+                process.env.JWT_SECRET
+              );
               user.password = undefined;
 
               res.status(200).json({
                 success: true,
-                message: "user login successfull :)",
+                message: 'user login successfull :)',
                 user,
                 token
               });
             } else if (!match) {
               res.status(400).json({
                 success: false,
-                message: "invalid password",
+                message: 'invalid password'
               });
             }
           });
         }
-      })
+      });
   },
 
   // get single user
@@ -116,18 +125,17 @@ module.exports = {
         if (err) {
           res.status(500).json({
             success: false,
-            message: "server error",
+            message: 'server error',
             error: err
           });
         }
         res.status(200).json({
           success: true,
-          message: "user found",
+          message: 'user found',
           user
         });
-      })
+      });
   },
-
 
   // ===========================================
   // future refrence
@@ -272,24 +280,26 @@ module.exports = {
 
     User.findOneAndDelete({
       _id: id
-    }).select('userName email').exec((err, user) => {
-      if (err) {
-        res.status(500).json({
-          success: false,
-          message: "server error",
-          error: err
-        });
-      } else if (user) {
-        res.status(200).json({
-          success: true,
-          message: "user deleted",
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          message: "page not found",
-        });
-      }
     })
+      .select('userName email')
+      .exec((err, user) => {
+        if (err) {
+          res.status(500).json({
+            success: false,
+            message: 'server error',
+            error: err
+          });
+        } else if (user) {
+          res.status(200).json({
+            success: true,
+            message: 'user deleted'
+          });
+        } else {
+          res.status(404).json({
+            success: false,
+            message: 'page not found'
+          });
+        }
+      });
   }
-}
+};
